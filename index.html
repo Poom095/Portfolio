@@ -1,0 +1,756 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { 
+  User, 
+  Briefcase, 
+  Code, 
+  Mail, 
+  Moon, 
+  Sun, 
+  Menu, 
+  X,
+  MapPin,
+  Phone,
+  MessageCircle,
+  Award,
+  MonitorPlay,
+  Heart,
+  Gamepad2,
+  Music,
+  ArrowUp,
+  Star,
+  Github,
+  Linkedin,
+  ExternalLink,
+  ChevronRight,
+  ChevronLeft,
+  Calendar,
+  Layers,
+  Play,
+  Image as ImageIcon
+} from 'lucide-react';
+
+// --- 1. ข้อมูลส่วนตัว ---
+const personalData = {
+  name: "ภูมิ เพชรทอง (Poom)",
+  role: ["นักศึกษา ITDI", "Graphic Designer", "Video Editor"],
+  about: (
+    <>
+      นักศึกษาสาขาเทคโนโลยีสารสนเทศและนวัตกรรมดิจิทัล (ITDI) <br />
+      GPA 3.43 มีความกระตือรือร้นในการเรียนรู้เทคโนโลยีใหม่ๆ มีทักษะพื้นฐานด้านกราฟิก (Photoshop) การตัดต่อวิดีโอ และการออกแบบ UI สามารถทำงานภายใต้ความกดดันและทำงานเป็นทีมได้ดี
+    </>
+  ),
+  hobbies: "ดูหนัง, ฟังเพลง, เล่นเกม",
+  location: "197 ถ.ปาดังเบซาร์ ต.สะเดา อ.สะเดา จ.สงขลา 90120",
+  email: "poompt095@gmail.com",
+  phone: "095-092-3050",
+  line: "arther09",
+  lineUrl: "https://line.me/ti/p/~arther09",
+  profileImage: "https://i.postimg.cc/rmKXBD4f/Brighter-Portrait.png" 
+};
+
+// --- 2. ข้อมูลผลงาน ---
+const projects = [
+  {
+    id: 1,
+    title: "Hospital App Testing",
+    category: "Academic",
+    description: "ดำเนินการทดสอบระบบและตรวจสอบคุณภาพแอปพลิเคชันสำหรับโรงพยาบาล เพื่อค้นหาข้อผิดพลาดและปรับปรุงประสิทธิภาพ",
+    fullDescription: "รับผิดชอบในกระบวนการทดสอบซอฟต์แวร์ (Software Testing) สำหรับแอปพลิเคชันโรงพยาบาล โดยเน้นการตรวจสอบความถูกต้องของฟังก์ชัน (Functional Testing) และการใช้งาน (Usability) เพื่อค้นหาและรายงานข้อผิดพลาด (Bugs) ให้ทีมพัฒนาแก้ไข เพื่อให้มั่นใจว่าระบบมีความเสถียรและตอบโจทย์ผู้ใช้งาน",
+    tags: ["Software Testing", "QA", "Bug Reporting"],
+    icon: <Award />,
+    image: "https://i.postimg.cc/hvXvYKyf/unnamed.webp"
+  },
+  {
+    id: 2,
+    title: "RoV E-sports Tournament",
+    category: "Event",
+    description: "วางแผนและจัดการแข่งขันกีฬาอีสปอร์ต Arena of Valor (RoV) ภายในมหาวิทยาลัย ดูแลระบบการแข่งขันและสตรีมมิ่ง",
+    fullDescription: "ทำหน้าที่เป็นผู้ร่วมจัดการแข่งขัน (Organizer) ตั้งแต่การวางแผนรูปแบบการแข่ง การรับสมัคร ไปจนถึงการควบคุมระบบนับคะแนนและการประสานงานการถ่ายทอดสดภายในรั้วมหาวิทยาลัย",
+    tags: ["Management", "Streaming"],
+    icon: <Gamepad2 />,
+    image: "https://i.postimg.cc/cJx768kw/1000026968.jpg",
+    gallery: [
+      "https://i.postimg.cc/cJx768kw/1000026968.jpg", 
+      "https://i.postimg.cc/XvjKXy1x/1000029209.jpg",
+      "https://i.postimg.cc/9fmPzqgx/1000029210.jpg"
+    ]
+  },
+  {
+    id: 3,
+    title: "University Open House",
+    category: "Event",
+    description: "เจ้าหน้าที่ประจำบูธต้อนรับในกิจกรรมเปิดบ้านมหาวิทยาลัย แนะนำสาขาและนวัตกรรมดิจิทัล",
+    fullDescription: "ปฏิบัติหน้าที่เป็นตัวแทนนักศึกษาสาขา ITDI ในการต้อนรับและให้ข้อมูลแก่นักเรียนที่สนใจเข้าศึกษาต่อ โดยนำเสนอผลงานและหลักสูตรผ่านการสาธิตนวัตกรรมที่น่าสนใจ",
+    tags: ["Staff", "Communication"],
+    icon: <User />,
+    image: "https://i.postimg.cc/gkfbNL0K/Screenshot-2026-02-10-225425.png",
+    gallery: [
+      "https://i.postimg.cc/7YBf6VmC/1000029215.jpg",
+      "https://i.postimg.cc/2SV3BZK5/1000029216.jpg"
+    ]
+  },
+  {
+    id: 4,
+    title: "Music Video Production",
+    category: "Media",
+    description: "ผู้ช่วยและนักแสดงในการถ่ายทำและผลิตมิวสิควิดีโอ (MV) รวมถึงช่วยในส่วนการตัดต่อเบื้องต้น",
+    fullDescription: "มีส่วนร่วมในกระบวนการถ่ายทำมิวสิควิดีโอ ทั้งเบื้องหน้าและเบื้องหลัง เรียนรู้การจัดวางมุมกล้อง และช่วยสนับสนุนฝ่ายตัดต่อในการเรียบเรียงฟุตเทจเบื้องต้น",
+    tags: ["Production", "Editing"],
+    icon: <Music />,
+    // ใช้ภาพปกจาก YouTube เพื่อความสวยงาม
+    image: "https://img.youtube.com/vi/kb5VwVnHyaQ/maxresdefault.jpg",
+    // ใส่ลิงก์วิดีโอที่นี่ (ระบบจะแปลงเป็น iframe ให้เอง)
+    video: "https://www.youtube.com/watch?v=kb5VwVnHyaQ" 
+  },
+  {
+    id: 5,
+    title: "Graphic & UI Design",
+    category: "Design",
+    description: "ออกแบบโปสเตอร์ อินโฟกราฟิก และโครงสร้างหน้าเว็บไซต์ (UI) สำหรับโปรเจกต์รายวิชา",
+    fullDescription: "สร้างสรรค์ผลงานออกแบบกราฟิกหลากหลายรูปแบบ ทั้งสื่อสิ่งพิมพ์และสื่อดิจิทัล โดยใช้ Adobe Photoshop และเครื่องมือออกแบบ UI เพื่อสร้างประสบการณ์ใช้งานที่สวยงามและตอบโจทย์",
+    tags: ["Photoshop", "UI/UX"],
+    icon: <MonitorPlay />,
+    image: "https://i.postimg.cc/m2tPwvsV/figma.png",
+    gallery: [
+      "https://i.postimg.cc/13sPn9GT/1.png",
+      "https://i.postimg.cc/0ynv7LnC/2.png"
+    ]
+  }
+];
+
+const skills = [
+  { 
+    category: "Creative & Design", 
+    icon: <MonitorPlay />,
+    items: [
+      { name: "Photoshop", level: 80 },
+      { name: "Video Editing", level: 75 },
+      { name: "UI Design", level: 70 },
+      { name: "Graphic Design", level: 75 }
+    ] 
+  },
+  { 
+    category: "Tech & Tools", 
+    icon: <Code />,
+    items: [
+      { name: "MS Office", level: 90 },
+      { name: "Computer Basics", level: 95 },
+      { name: "Web Layout", level: 60 }
+    ] 
+  },
+  { 
+    category: "Soft Skills", 
+    icon: <User />,
+    items: [
+      { name: "Teamwork", level: 90 },
+      { name: "Communication", level: 85 },
+      { name: "Adaptability", level: 85 },
+      { name: "Creativity", level: 80 }
+    ] 
+  }
+];
+
+const educations = [
+  {
+    id: 1,
+    role: "ปริญญาตรี (กำลังศึกษา)",
+    institution: "มหาวิทยาลัยราชภัฏสงขลา",
+    period: "ปัจจุบัน",
+    gpax: "GPA 3.43",
+    description: "วิทยาศาสตรบัณฑิต สาขาเทคโนโลยีสารสนเทศและนวัตกรรมดิจิทัล (ITDI)"
+  },
+  {
+    id: 2,
+    role: "มัธยมศึกษาตอนปลาย",
+    institution: "โรงเรียนเทศบาล 2 บ้านสะเดา จ.สงขลา",
+    period: "2023",
+    gpax: "GPA 2.85",
+    description: "สำเร็จการศึกษาชั้นมัธยมปลาย สายวิทย์-คณิต"
+  }
+];
+
+// --- 3. Utility Functions & Hooks ---
+
+const getVideoSource = (url) => {
+  if (!url) return null;
+  const ytMatch = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
+  if (ytMatch && ytMatch[2].length === 11) {
+    // กำหนดค่า Player: autoplay (เล่นเอง), mute (ปิดเสียง), controls=0 (ซ่อนปุ่ม), loop=1 (วนลูป)
+    return { type: 'iframe', src: `https://www.youtube.com/embed/${ytMatch[2]}?autoplay=1&mute=1&controls=0&loop=1&playlist=${ytMatch[2]}&rel=0&playsinline=1` };
+  }
+  if (url.includes('drive.google.com')) {
+    return { type: 'iframe', src: url.replace(/\/view.*/, '/preview') };
+  }
+  if (url.match(/\.(mp4|webm|ogg)$/i)) {
+    return { type: 'video', src: url };
+  }
+  return { type: 'iframe', src: url };
+};
+
+const useMousePosition = () => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  useEffect(() => {
+    const handleMouseMove = (e) => setMousePosition({ x: e.clientX, y: e.clientY });
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+  return mousePosition;
+};
+
+const useTypewriter = (textArr, speed = 100) => {
+  const [displayText, setDisplayText] = useState('');
+  const [wordIndex, setWordIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    if (!textArr || textArr.length === 0) return;
+    const currentWord = textArr[wordIndex % textArr.length];
+    const timeout = setTimeout(() => {
+      if (!isDeleting) {
+        setDisplayText(currentWord.substring(0, displayText.length + 1));
+        if (displayText === currentWord) setTimeout(() => setIsDeleting(true), 2000);
+      } else {
+        setDisplayText(currentWord.substring(0, displayText.length - 1));
+        if (displayText === '') {
+          setIsDeleting(false);
+          setWordIndex(wordIndex + 1);
+        }
+      }
+    }, isDeleting ? speed / 2 : speed);
+    return () => clearTimeout(timeout);
+  }, [displayText, isDeleting, wordIndex, textArr, speed]);
+
+  return displayText;
+};
+
+const RevealOnScroll = ({ children, className = "" }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) setIsVisible(true); }, { threshold: 0.1 });
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+  return (
+    <div ref={ref} className={`transition-all duration-1000 transform ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"} ${className}`}>
+      {children}
+    </div>
+  );
+};
+
+// --- 4. Sub-Components ---
+
+// Modal Component ที่รองรับทั้ง Video และ Image Gallery Slider
+const ProjectModal = ({ project, isOpen, onClose, isDarkMode }) => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Reset slide เมื่อเปิด Modal ใหม่
+  useEffect(() => {
+    if (isOpen) setCurrentSlide(0);
+  }, [isOpen, project]);
+
+  if (!isOpen || !project) return null;
+
+  const videoData = project.video ? getVideoSource(project.video) : null;
+  const hasGallery = project.gallery && project.gallery.length > 0;
+
+  const nextSlide = () => {
+    if (hasGallery) {
+      setCurrentSlide((prev) => (prev + 1) % project.gallery.length);
+    }
+  };
+
+  const prevSlide = () => {
+    if (hasGallery) {
+      setCurrentSlide((prev) => (prev - 1 + project.gallery.length) % project.gallery.length);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
+      <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-md" onClick={onClose}></div>
+      <div className={`relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-[2.5rem] shadow-2xl transition-all animate-in zoom-in duration-300 ${isDarkMode ? 'bg-slate-900 text-white border border-slate-800' : 'bg-white text-slate-900'}`}>
+        <button onClick={onClose} className={`absolute top-6 right-6 z-10 p-2 rounded-full transition-colors ${isDarkMode ? 'bg-slate-800 hover:bg-slate-700' : 'bg-slate-100 hover:bg-slate-200'}`}>
+          <X size={24} />
+        </button>
+        
+        <div className="flex flex-col md:flex-row h-full">
+          {/* ส่วนแสดงผล Media */}
+          <div className={`md:w-1/2 h-64 md:h-[500px] flex items-center justify-center overflow-hidden bg-black relative group`}>
+            
+            {/* Logic การแสดงผล: Video -> Gallery -> Single Image */}
+            {videoData ? (
+              videoData.type === 'iframe' ? (
+                <div className="relative w-full h-full">
+                  <iframe 
+                    className="w-full h-full pointer-events-none" // pointer-events-none เพื่อป้องกันการกดหยุด (ถ้าต้องการให้กดไม่ได้)
+                    src={videoData.src} 
+                    title="Video player" 
+                    frameBorder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowFullScreen
+                  ></iframe>
+                  {/* Transparent overlay to prevent interaction if needed */}
+                  <div className="absolute inset-0 bg-transparent"></div>
+                </div>
+              ) : (
+                <video 
+                  controls={false} // ซ่อน controls ของ video tag
+                  autoPlay 
+                  muted 
+                  loop
+                  playsInline
+                  className="w-full h-full object-contain" 
+                  poster={project.image}
+                >
+                  <source src={videoData.src} />
+                  Your browser does not support the video tag.
+                </video>
+              )
+            ) : hasGallery ? (
+              <>
+                <img 
+                  src={project.gallery[currentSlide]} 
+                  alt={`${project.title} - Slide ${currentSlide + 1}`} 
+                  className="w-full h-full object-contain transition-opacity duration-300" 
+                />
+                
+                {/* ปุ่มเลื่อนซ้ายขวา (แสดงเฉพาะเมื่อมีรูปมากกว่า 1) */}
+                {project.gallery.length > 1 && (
+                  <>
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); prevSlide(); }}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-all opacity-0 group-hover:opacity-100"
+                    >
+                      <ChevronLeft size={24} />
+                    </button>
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); nextSlide(); }}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-all opacity-0 group-hover:opacity-100"
+                    >
+                      <ChevronRight size={24} />
+                    </button>
+                    
+                    {/* จุดบอกตำแหน่งภาพ */}
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                      {project.gallery.map((_, idx) => (
+                        <div 
+                          key={idx} 
+                          className={`w-2 h-2 rounded-full transition-all ${idx === currentSlide ? 'bg-white w-4' : 'bg-white/50'}`} 
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
+              </>
+            ) : (
+              <img src={project.image} alt={project.title} className="w-full h-full object-contain" />
+            )}
+          </div>
+          
+          <div className="md:w-1/2 p-8 md:p-12 space-y-6">
+            <div className="flex items-center gap-2 text-blue-500 font-bold uppercase tracking-widest text-xs">
+              <Layers size={14} />
+              {project.category}
+            </div>
+            <h2 className="text-3xl font-black leading-tight">{project.title}</h2>
+            <p className={`text-lg leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+              {project.fullDescription}
+            </p>
+            <div className="flex flex-wrap gap-2 pt-4">
+              {project.tags.map(tag => (
+                <span key={tag} className={`px-4 py-1.5 rounded-full text-xs font-bold border ${isDarkMode ? 'bg-slate-800 border-slate-700 text-slate-300' : 'bg-slate-50 border-slate-200 text-slate-500'}`}>
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const Navbar = ({ isDarkMode, toggleTheme }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+  const navLinks = [
+    { name: 'Home', id: 'home' },
+    { name: 'About', id: 'about' },
+    { name: 'Skills', id: 'skills' },
+    { name: 'Experience', id: 'experience' },
+    { name: 'Projects', id: 'projects' },
+    { name: 'Contact', id: 'contact' },
+  ];
+  const scrollTo = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setIsMenuOpen(false);
+      setActiveSection(id);
+    }
+  };
+  return (
+    <nav className={`fixed top-0 w-full z-50 backdrop-blur-md transition-all duration-300 ${isDarkMode ? 'bg-slate-900/80 border-b border-slate-800' : 'bg-white/80 border-b border-slate-200'}`}>
+      <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+        <div className="flex items-center gap-2 cursor-pointer" onClick={() => scrollTo('home')}>
+          <div className="w-8 h-8 rounded bg-gradient-to-tr from-blue-600 to-cyan-400 flex items-center justify-center text-white font-bold">P</div>
+          <span className={`font-bold text-xl ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Poom.</span>
+        </div>
+        <div className="hidden md:flex items-center gap-6">
+          {navLinks.map(link => (
+            <button key={link.id} onClick={() => scrollTo(link.id)} className={`text-sm font-medium transition-colors hover:text-blue-500 ${activeSection === link.id ? 'text-blue-500' : (isDarkMode ? 'text-slate-300' : 'text-slate-600')}`}>
+              {link.name}
+            </button>
+          ))}
+          <button onClick={toggleTheme} className={`p-2 rounded-full ${isDarkMode ? 'bg-slate-800 text-yellow-400' : 'bg-slate-100 text-slate-600'}`}>
+            {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+        </div>
+        <div className="md:hidden flex items-center gap-4">
+           <button onClick={toggleTheme} className={`p-2 rounded-full ${isDarkMode ? 'bg-slate-800 text-yellow-400' : 'bg-slate-100 text-slate-600'}`}>
+            {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className={isDarkMode ? 'text-white' : 'text-slate-900'}>
+            {isMenuOpen ? <X /> : <Menu />}
+          </button>
+        </div>
+      </div>
+      {isMenuOpen && (
+        <div className={`md:hidden absolute top-16 left-0 w-full p-4 flex flex-col gap-4 border-b ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+          {navLinks.map(link => (
+            <button key={link.id} onClick={() => scrollTo(link.id)} className={`text-left text-lg ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
+              {link.name}
+            </button>
+          ))}
+        </div>
+      )}
+    </nav>
+  );
+};
+
+// --- 5. Main App ---
+const App = () => {
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const typingRole = useTypewriter(personalData.role);
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [selectedProject, setSelectedProject] = useState(null);
+  const mousePos = useMousePosition();
+
+  const filteredProjects = activeFilter === 'All' ? projects : projects.filter(p => p.category === activeFilter);
+  const toggleTheme = () => setIsDarkMode(!isDarkMode);
+
+  useEffect(() => {
+    if (selectedProject) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = 'auto';
+  }, [selectedProject]);
+
+  return (
+    <div className={`min-h-screen transition-colors duration-500 relative cursor-none select-none ${isDarkMode ? 'bg-slate-950 text-slate-200' : 'bg-slate-50 text-slate-800'}`}>
+      
+      <div className="pointer-events-none fixed inset-0 z-30 transition-opacity duration-300" style={{ background: `radial-gradient(600px at ${mousePos.x}px ${mousePos.y}px, ${isDarkMode ? 'rgba(29, 78, 216, 0.15)' : 'rgba(59, 130, 246, 0.1)'}, transparent 80%)` }} />
+      <div className="pointer-events-none fixed z-[9999] w-4 h-4 rounded-full mix-blend-difference transition-transform duration-100 ease-out transform -translate-x-1/2 -translate-y-1/2 bg-white" style={{ left: mousePos.x, top: mousePos.y }} />
+      <div className="pointer-events-none fixed z-[9998] w-8 h-8 rounded-full border border-blue-500/50 transition-all duration-300 ease-out transform -translate-x-1/2 -translate-y-1/2" style={{ left: mousePos.x, top: mousePos.y, transition: 'all 0.15s ease-out' }} />
+
+      <Navbar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+
+      {/* Hero */}
+      <section id="home" className="min-h-screen pt-24 pb-12 flex items-center relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 w-full grid md:grid-cols-2 gap-12 items-center z-10">
+          <RevealOnScroll>
+            <div className="space-y-6">
+              <div className={`inline-block px-4 py-1 rounded-full text-sm font-semibold border ${isDarkMode ? 'bg-blue-500/10 border-blue-500/20 text-blue-400' : 'bg-blue-100 border-blue-200 text-blue-700'}`}>
+                👋 ยินดีต้อนรับสู่พอร์ตโฟลิโอของผม
+              </div>
+              <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight">
+                ผมชื่อ <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400">{personalData.name.split(' ')[0]}</span>
+              </h1>
+              <div className="text-2xl md:text-3xl font-medium h-8">
+                ผมเป็น <span className="text-blue-500">{typingRole}</span>
+                <span className="animate-pulse ml-1 inline-block w-1 h-8 bg-blue-500"></span>
+              </div>
+              <p className={`text-lg leading-relaxed max-w-lg ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+                {personalData.about}
+              </p>
+              <div className="flex gap-4 pt-4">
+                <button onClick={() => document.getElementById('contact').scrollIntoView({behavior: 'smooth'})} className="px-8 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold transition-all transform hover:-translate-y-1 shadow-lg shadow-blue-600/20">
+                  ติดต่อสอบถาม
+                </button>
+                <button onClick={() => document.getElementById('projects').scrollIntoView({behavior: 'smooth'})} className={`px-8 py-3 rounded-full border font-bold transition-all ${isDarkMode ? 'border-slate-700 hover:bg-slate-900' : 'border-slate-300 hover:bg-slate-100'}`}>
+                  ชมผลงาน
+                </button>
+              </div>
+            </div>
+          </RevealOnScroll>
+          <RevealOnScroll className="flex justify-center">
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+              <div className={`relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 ${isDarkMode ? 'border-slate-800' : 'border-white'}`}>
+                <img 
+                  src={personalData.profileImage} 
+                  alt="Profile" 
+                  className="w-full h-full object-cover object-top grayscale-[20%] group-hover:grayscale-0 transition duration-500" 
+                />
+              </div>
+              <div className={`absolute -right-4 top-1/4 p-3 rounded-2xl shadow-xl animate-bounce duration-[3000ms] ${isDarkMode ? 'bg-slate-800' : 'bg-white'}`}>
+                <MonitorPlay className="text-blue-500" />
+              </div>
+              <div className={`absolute -left-4 bottom-1/4 p-3 rounded-2xl shadow-xl animate-bounce delay-700 duration-[3000ms] ${isDarkMode ? 'bg-slate-800' : 'bg-white'}`}>
+                <Gamepad2 className="text-cyan-500" />
+              </div>
+            </div>
+          </RevealOnScroll>
+        </div>
+        <div className="absolute top-1/4 right-0 w-72 h-72 bg-blue-600/10 blur-[120px] rounded-full"></div>
+        <div className="absolute bottom-1/4 left-0 w-72 h-72 bg-cyan-600/10 blur-[120px] rounded-full"></div>
+      </section>
+
+      {/* About */}
+      <section id="about" className={`py-24 ${isDarkMode ? 'bg-slate-900/50' : 'bg-white'}`}>
+        <div className="max-w-5xl mx-auto px-4">
+          <RevealOnScroll>
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-bold mb-4">รู้จักกันให้มากขึ้น</h2>
+              <div className="w-12 h-1 bg-blue-500 mx-auto rounded-full"></div>
+            </div>
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div className="space-y-6">
+                <h3 className="text-2xl font-bold">ความมุ่งมั่นและเป้าหมาย</h3>
+                <div className={`leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+                  {personalData.about}
+                </div>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <MapPin className="text-blue-500" size={20} />
+                    <span>{personalData.location}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Heart className="text-red-500" size={20} />
+                    <span>งานอดิเรก: {personalData.hobbies}</span>
+                  </div>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                {['Creative', 'Detail-oriented', 'Fast Learner', 'Team Player'].map(tag => (
+                  <div key={tag} className={`p-6 rounded-2xl text-center font-bold ${isDarkMode ? 'bg-slate-800/50' : 'bg-slate-100'}`}>
+                    {tag}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </RevealOnScroll>
+        </div>
+      </section>
+
+      {/* Skills */}
+      <section id="skills" className="py-24">
+        <div className="max-w-7xl mx-auto px-4">
+          <RevealOnScroll>
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-bold mb-4">ทักษะและความสามารถ</h2>
+              <div className="w-12 h-1 bg-blue-500 mx-auto rounded-full"></div>
+            </div>
+            <div className="grid md:grid-cols-3 gap-8">
+              {skills.map((skillGroup, idx) => (
+                <div key={idx} className={`p-8 rounded-3xl border transition-all hover:border-blue-500/50 ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+                  <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500 mb-6">{skillGroup.icon}</div>
+                  <h3 className="text-xl font-bold mb-6">{skillGroup.category}</h3>
+                  <div className="space-y-4">
+                    {skillGroup.items.map(item => (
+                      <div key={item.name}>
+                        <div className="flex justify-between text-sm mb-1">
+                          <span className="font-medium">{item.name}</span>
+                          <span className="text-slate-500">{item.level}%</span>
+                        </div>
+                        <div className={`h-1.5 w-full rounded-full ${isDarkMode ? 'bg-slate-800' : 'bg-slate-100'}`}>
+                          <div className="h-full bg-blue-500 rounded-full transition-all duration-1000 ease-out" style={{ width: `${item.level}%` }}></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </RevealOnScroll>
+        </div>
+      </section>
+
+      {/* Education */}
+      <section id="experience" className={`py-24 ${isDarkMode ? 'bg-slate-900/50' : 'bg-white'}`}>
+        <div className="max-w-4xl mx-auto px-4">
+          <RevealOnScroll>
+             <div className="text-center mb-16">
+              <h2 className="text-3xl font-bold mb-4">ประวัติการศึกษา</h2>
+              <div className="w-12 h-1 bg-blue-500 mx-auto rounded-full"></div>
+            </div>
+            <div className="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
+              {educations.map((edu) => (
+                <div key={edu.id} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                  <div className="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-blue-500 text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
+                    <Star size={16} />
+                  </div>
+                  <div className={`w-[calc(100%-4rem)] md:w-[45%] p-6 rounded-2xl border transition-all hover:shadow-xl ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+                    <div className="flex justify-between items-start mb-2">
+                      <span className="text-sm font-bold text-blue-500">{edu.period}</span>
+                      <span className={`px-2 py-0.5 rounded text-xs font-bold ${isDarkMode ? 'bg-slate-800' : 'bg-slate-100'}`}>{edu.gpax}</span>
+                    </div>
+                    <h3 className="text-lg font-bold">{edu.role}</h3>
+                    <div className="font-medium text-slate-500 mb-2">{edu.institution}</div>
+                    <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>{edu.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </RevealOnScroll>
+        </div>
+      </section>
+
+      {/* Projects */}
+      <section id="projects" className="py-24">
+        <div className="max-w-7xl mx-auto px-4">
+          <RevealOnScroll>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold mb-4">ผลงานที่ภาคภูมิใจ</h2>
+              <div className="w-12 h-1 bg-blue-500 mx-auto rounded-full mb-8"></div>
+              <div className="flex flex-wrap justify-center gap-3">
+                {['All', 'Design', 'Event', 'Media', 'Academic'].map(cat => (
+                  <button key={cat} onClick={() => setActiveFilter(cat)} className={`px-6 py-2 rounded-full text-sm font-bold transition-all ${activeFilter === cat ? 'bg-blue-600 text-white' : (isDarkMode ? 'bg-slate-800 text-slate-400 hover:bg-slate-700' : 'bg-slate-100 text-slate-600 hover:bg-slate-200')}`}>
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredProjects.map(project => (
+                <div 
+                  key={project.id} 
+                  onClick={() => setSelectedProject(project)}
+                  className={`group rounded-3xl overflow-hidden border cursor-pointer transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-100'}`}
+                >
+                  <div className={`h-48 flex items-center justify-center relative overflow-hidden ${isDarkMode ? 'bg-slate-800' : 'bg-slate-50'}`}>
+                    <div className="text-blue-500 transform group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500">{React.cloneElement(project.icon, { size: 48 })}</div>
+                    <div className="absolute inset-0 bg-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                       {/* แสดงปุ่ม Play หากเป็นวิดีโอ */}
+                       {project.video ? <Play size={40} className="text-white fill-white" /> : <ExternalLink size={24} className="text-white" />}
+                    </div>
+                    <img 
+                      src={project.image} 
+                      alt={project.title} 
+                      className="absolute inset-0 w-full h-full object-cover object-top opacity-30 group-hover:opacity-100 transition-opacity duration-500" 
+                    />
+                    
+                    {/* ไอคอนบ่งบอกว่าเป็น Gallery (ถ้ามีหลายรูป) */}
+                    {project.gallery && project.gallery.length > 1 && (
+                      <div className="absolute bottom-4 left-4 bg-black/50 backdrop-blur-sm px-2 py-1 rounded text-[10px] text-white flex items-center gap-1">
+                        <ImageIcon size={12} /> {project.gallery.length} Photos
+                      </div>
+                    )}
+
+                    <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-blue-500 border border-blue-500/20 z-10">{project.category}</div>
+                  </div>
+                  <div className="p-6 relative z-10">
+                    <h3 className="text-xl font-bold mb-3 group-hover:text-blue-500 transition-colors">{project.title}</h3>
+                    <p className={`text-sm mb-6 h-12 line-clamp-2 ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>{project.description}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {project.tags.map(tag => (
+                        <span key={tag} className={`text-[10px] font-bold px-2 py-1 rounded border ${isDarkMode ? 'bg-slate-800 border-slate-700 text-slate-400' : 'bg-slate-50 border-slate-200 text-slate-500'}`}>#{tag}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </RevealOnScroll>
+        </div>
+      </section>
+
+      <ProjectModal 
+        project={selectedProject} 
+        isOpen={!!selectedProject} 
+        onClose={() => setSelectedProject(null)} 
+        isDarkMode={isDarkMode} 
+      />
+
+      {/* Contact Section - No Form */}
+      <section id="contact" className={`py-24 ${isDarkMode ? 'bg-slate-900/50' : 'bg-blue-600'}`}>
+        <div className="max-w-4xl mx-auto px-4">
+          <RevealOnScroll>
+            <div className={`rounded-[3rem] overflow-hidden p-8 md:p-16 text-center shadow-2xl relative ${isDarkMode ? 'bg-slate-950 border border-slate-800' : 'bg-white'}`}>
+              <div className="relative z-10 space-y-10">
+                <div className="space-y-4">
+                  <div className="inline-flex p-4 rounded-3xl bg-blue-500/10 text-blue-500 mb-2">
+                    <MessageCircle size={32} />
+                  </div>
+                  <h2 className="text-4xl md:text-5xl font-black tracking-tight">คุยกับผมได้ที่นี่</h2>
+                  <p className={`text-lg max-w-lg mx-auto leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+                    มีโปรเจกต์ที่น่าสนใจ หรือต้องการร่วมงานกัน? เลือกช่องทางที่คุณสะดวกเพื่อติดต่อผมได้โดยตรงครับ!
+                  </p>
+                </div>
+
+                <div className="grid gap-6 md:grid-cols-3 max-w-3xl mx-auto">
+                  <a href={`mailto:${personalData.email}`} className={`group p-8 rounded-[2rem] border transition-all hover:-translate-y-2 flex flex-col items-center gap-4 ${isDarkMode ? 'bg-slate-900 border-slate-800 hover:border-blue-500/50' : 'bg-slate-50 border-slate-200 hover:border-blue-500 hover:shadow-xl'}`}>
+                    <div className="w-14 h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover:scale-110 transition-transform"><Mail size={24} /></div>
+                    <div className="text-center">
+                      <p className="text-xs uppercase font-black opacity-40 mb-1 tracking-widest">Email</p>
+                      <p className="font-bold text-sm md:text-xs lg:text-sm truncate w-full max-w-[150px]">{personalData.email}</p>
+                    </div>
+                  </a>
+
+                  <a href={`tel:${personalData.phone}`} className={`group p-8 rounded-[2rem] border transition-all hover:-translate-y-2 flex flex-col items-center gap-4 ${isDarkMode ? 'bg-slate-900 border-slate-800 hover:border-blue-500/50' : 'bg-slate-50 border-slate-200 hover:border-blue-500 hover:shadow-xl'}`}>
+                    <div className="w-14 h-14 rounded-2xl bg-green-500/10 flex items-center justify-center text-green-500 group-hover:scale-110 transition-transform"><Phone size={24} /></div>
+                    <div className="text-center">
+                      <p className="text-xs uppercase font-black opacity-40 mb-1 tracking-widest">Phone</p>
+                      <p className="font-bold text-sm">{personalData.phone}</p>
+                    </div>
+                  </a>
+
+                  <a href={personalData.lineUrl} target="_blank" rel="noopener noreferrer" className={`group p-8 rounded-[2rem] border transition-all hover:-translate-y-2 flex flex-col items-center gap-4 ${isDarkMode ? 'bg-slate-900 border-slate-800 hover:border-blue-500/50' : 'bg-slate-50 border-slate-200 hover:border-blue-500 hover:shadow-xl'}`}>
+                    <div className="w-14 h-14 rounded-2xl bg-green-400/10 flex items-center justify-center text-green-400 group-hover:scale-110 transition-transform"><MessageCircle size={24} /></div>
+                    <div className="text-center">
+                      <p className="text-xs uppercase font-black opacity-40 mb-1 tracking-widest">Line ID</p>
+                      <p className="font-bold text-sm">{personalData.line}</p>
+                    </div>
+                  </a>
+                </div>
+
+                <div className="pt-10 border-t border-slate-500/10 flex flex-col md:flex-row items-center justify-center gap-6">
+                  <div className="flex items-center gap-2 text-sm font-medium opacity-50 italic">
+                    <MapPin size={16} />
+                    <span>{personalData.location}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 blur-[80px] rounded-full"></div>
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-cyan-500/5 blur-[80px] rounded-full"></div>
+            </div>
+          </RevealOnScroll>
+        </div>
+      </section>
+
+      <footer className={`py-12 border-t text-center ${isDarkMode ? 'bg-slate-950 border-slate-900 text-slate-500' : 'bg-slate-50 border-slate-200 text-slate-400'}`}>
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex flex-col items-center gap-6">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 rounded bg-blue-600 flex items-center justify-center text-white text-[10px] font-bold">P</div>
+              <span className={`font-bold text-lg ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Poom.</span>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      <button onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} className={`fixed bottom-6 right-6 p-3 rounded-full shadow-2xl transition-all hover:scale-110 z-40 ${isDarkMode ? 'bg-blue-600 text-white' : 'bg-white text-blue-600'}`}>
+        <ArrowUp size={20} />
+      </button>
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .animate-blink { animation: blink 1s infinite; }
+        * { cursor: none !important; }
+        a, button, input, textarea, .cursor-pointer { cursor: none !important; }
+      `}} />
+    </div>
+  );
+};
+
+export default App;
