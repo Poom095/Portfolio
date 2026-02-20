@@ -195,7 +195,7 @@
                 </p>
                 <div class="flex gap-4 pt-4">
                     <button onclick="scrollToSection('contact')" class="px-8 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold transition-all transform hover:-translate-y-1 shadow-lg shadow-blue-600/20">
-                        ติดต่อสอบถาม
+                        ติดต่อ
                     </button>
                     <button onclick="scrollToSection('projects')" class="px-8 py-3 rounded-full border border-slate-700 hover:bg-slate-900 font-bold transition-all text-white">
                         ชมผลงาน
@@ -373,7 +373,7 @@
                         </div>
                         <h3 class="text-lg font-bold text-white">มัธยมศึกษาตอนปลาย</h3>
                         <div class="font-medium text-slate-500 mb-2">โรงเรียนเทศบาล 2 บ้านสะเดา จ.สงขลา</div>
-                        <p class="text-sm text-slate-400">สำเร็จการศึกษาชั้นมัธยมปลาย สายวิทย์-คณิต</p>
+                        <p class="text-sm text-slate-400">สำเร็จการศึกษาชั้นมัธยมปลาย สายศิลป์-มลายู</p>
                     </div>
                 </div>
 
@@ -414,7 +414,7 @@
                         </div>
                         <h2 class="text-4xl md:text-5xl font-black tracking-tight text-white">คุยกับผมได้ที่นี่</h2>
                         <p class="text-lg max-w-lg mx-auto leading-relaxed text-slate-400">
-                            มีโปรเจกต์ที่น่าสนใจ หรือต้องการร่วมงานกัน? เลือกช่องทางที่คุณสะดวกเพื่อติดต่อผมได้โดยตรงครับ!
+                            ช่องทางการติดต่อ
                         </p>
                     </div>
 
@@ -453,29 +453,27 @@
                         </a>
                     </div>
 
-                    <div class="pt-10 border-t border-slate-500/10 flex justify-center">
-                        <div class="flex items-center gap-2 text-sm font-medium opacity-50 italic text-slate-300">
-                            <i data-lucide="map-pin" class="w-4 h-4"></i>
+                    <!-- Footer Details within Contact Section -->
+                    <div class="pt-10 border-t border-slate-500/10 flex flex-col md:flex-row justify-between items-center gap-6">
+                        <div class="flex items-center gap-2 text-sm font-medium opacity-70 text-slate-300">
+                            <i data-lucide="map-pin" class="w-5 h-5 text-blue-500"></i>
                             <span>197 ถ.ปาดังเบซาร์ ต.สะเดา อ.สะเดา จ.สงขลา 90120</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Background Blurs -->
-                <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 blur-[80px] rounded-full"></div>
-                <div class="absolute bottom-0 left-0 w-64 h-64 bg-cyan-500/5 blur-[80px] rounded-full"></div>
+                <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 blur-[80px] rounded-full pointer-events-none"></div>
+                <div class="absolute bottom-0 left-0 w-64 h-64 bg-cyan-500/5 blur-[80px] rounded-full pointer-events-none"></div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="py-12 border-t border-slate-900 text-center bg-slate-950">
+    <footer class="py-8 border-t border-slate-900 text-center bg-slate-950">
         <div class="max-w-7xl mx-auto px-4">
-            <div class="flex flex-col items-center gap-6">
-                <div class="flex items-center gap-2">
-                    <div class="w-6 h-6 rounded bg-blue-600 flex items-center justify-center text-white text-[10px] font-bold">P</div>
-                    <span class="font-bold text-lg text-white">Poom.</span>
-                </div>
+            <div class="flex items-center justify-center gap-2 opacity-50">
+                <span class="text-sm text-white">&copy; 2024 Poom Phetthong. All rights reserved.</span>
             </div>
         </div>
     </footer>
@@ -559,10 +557,10 @@
                 description: "ผู้ช่วยและนักแสดงในการถ่ายทำและผลิตมิวสิควิดีโอ (MV)",
                 fullDescription: "มีส่วนร่วมในกระบวนการถ่ายทำมิวสิควิดีโอ ทั้งเบื้องหน้าและเบื้องหลัง เรียนรู้การจัดวางมุมกล้อง และช่วยสนับสนุนฝ่ายตัดต่อในการเรียบเรียงฟุตเทจเบื้องต้น",
                 tags: ["Production", "Editing"],
-                icon: "music",
+                icon: "video",
                 image: "https://img.youtube.com/vi/kb5VwVnHyaQ/maxresdefault.jpg",
-                video: "https://www.youtube.com/watch?v=kb5VwVnHyaQ",
-                previewVideo: "https://www.youtube.com/embed/kb5VwVnHyaQ?autoplay=1&mute=1&controls=0&start=30&end=60&loop=1&playlist=kb5VwVnHyaQ"
+                video: "MV.mp4", // แก้ไขเป็นไฟล์วิดีโอ Local
+                previewVideo: "MV.mp4" // แก้ไขเป็นไฟล์วิดีโอ Local
             },
             {
                 id: 5,
@@ -577,6 +575,16 @@
                     "https://i.postimg.cc/13sPn9GT/1.png",
                     "https://i.postimg.cc/0ynv7LnC/2.png"
                 ]
+            },
+            {
+                id: 6, // เพิ่ม Project ใหม่ที่นี่
+                title: "Poster Design",
+                category: "Design",
+                description: "ออกแบบโปสเตอร์รถยนต์ Bugatti ด้วยสไตล์คลาสสิกขาว-ดำ",
+                fullDescription: "ผลงานการออกแบบโปสเตอร์รถยนต์ Bugatti ซูเปอร์คาร์ระดับตำนาน โดยเน้นการใช้สีขาวดำ เพื่อสร้างความโดดเด่นและคลาสสิก มีการจัดวางเลย์เอาต์ Typography ให้ดูทันสมัยและดึงดูดสายตา",
+                tags: ["Poster Design", "Photoshop"],
+                icon: "palette",
+                image: "https://i.postimg.cc/y8q8JFwF/Poom015.jpg" // อ้างอิงไฟล์รูปที่คุณอัปโหลด
             }
         ];
 
@@ -697,11 +705,20 @@
                     if (project.previewVideo) {
                         previewTimeout = setTimeout(() => {
                             const container = card.querySelector('.media-container');
+                            
+                            // Check if it's a local video or youtube iframe
+                            let mediaHtml = '';
+                            if (project.previewVideo.endsWith('.mp4')) {
+                                mediaHtml = `<video src="${project.previewVideo}" class="w-full h-full object-cover pointer-events-none" autoplay muted loop playsinline></video>`;
+                            } else {
+                                mediaHtml = `<iframe src="${project.previewVideo}" class="w-full h-full pointer-events-none scale-125" frameborder="0" allow="autoplay; encrypted-media"></iframe>`;
+                            }
+
                             container.innerHTML = `
                                 <div class="absolute inset-0 w-full h-full bg-black z-20">
-                                    <iframe src="${project.previewVideo}" class="w-full h-full pointer-events-none scale-125" frameborder="0" allow="autoplay; encrypted-media"></iframe>
-                                    <div class="absolute inset-0 bg-transparent"></div>
-                                    <div class="absolute top-2 left-2 px-2 py-1 bg-red-600 text-white text-[10px] font-bold rounded flex items-center gap-1 shadow-md">
+                                    ${mediaHtml}
+                                    <div class="absolute inset-0 bg-transparent z-30"></div>
+                                    <div class="absolute top-2 left-2 px-2 py-1 bg-red-600 text-white text-[10px] font-bold rounded flex items-center gap-1 shadow-md z-40">
                                         <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span> PREVIEW
                                     </div>
                                 </div>
@@ -811,7 +828,6 @@
             if (!url) return null;
             const ytMatch = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
             if (ytMatch && ytMatch[2].length === 11) {
-                // Autoplay, Mute, No Controls, Loop
                 return `https://www.youtube.com/embed/${ytMatch[2]}?autoplay=1&mute=1&controls=0&loop=1&playlist=${ytMatch[2]}&rel=0&playsinline=1`;
             }
             return url;
@@ -822,14 +838,23 @@
             container.innerHTML = ''; // Clear
 
             if (currentProject.video) {
-                const src = getVideoSource(currentProject.video);
-                // Assume YouTube iframe for simplicity as per requirement
-                container.innerHTML = `
-                    <div class="relative w-full h-full">
-                        <iframe class="w-full h-full pointer-events-none" src="${src}" title="Video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                        <div class="absolute inset-0 bg-transparent"></div>
-                    </div>
-                `;
+                // ถ้าเป็นไฟล์วิดีโอ .mp4 ของเราเอง
+                if(currentProject.video.endsWith('.mp4')) {
+                    container.innerHTML = `
+                        <div class="relative w-full h-full flex items-center justify-center bg-black">
+                            <video class="w-full max-h-full" src="${currentProject.video}" controls autoplay></video>
+                        </div>
+                    `;
+                } else {
+                    // ถ้าเป็น YouTube Link
+                    const src = getVideoSource(currentProject.video);
+                    container.innerHTML = `
+                        <div class="relative w-full h-full">
+                            <iframe class="w-full h-full pointer-events-none" src="${src}" title="Video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                            <div class="absolute inset-0 bg-transparent z-10"></div>
+                        </div>
+                    `;
+                }
             } else if (currentProject.gallery && currentProject.gallery.length > 0) {
                 // Gallery Logic
                 const img = document.createElement('img');
@@ -857,7 +882,7 @@
                 // Single Image
                 const img = document.createElement('img');
                 img.src = currentProject.image;
-                img.className = 'w-full h-full object-contain';
+                img.className = 'w-full h-full object-contain p-4';
                 container.appendChild(img);
             }
         }
