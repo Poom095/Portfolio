@@ -69,7 +69,7 @@
             height: 100%;
             pointer-events: none;
             z-index: 30;
-            background: radial-gradient(600px at var(--x, 50%) var(--y, 50%), rgba(29, 78, 216, 0.15), transparent 80%);
+            background: radial-gradient(600px at var(--x, 50%) var(--y, 50%), rgba(29, 78, 216, 0.12), transparent 80%);
             transition: opacity 0.3s;
         }
 
@@ -125,11 +125,14 @@
         
         /* Interactive Elements cursor */
         a, button, input, textarea, .project-card {
-            cursor: none; /* ใช้ custom cursor */
+            cursor: none;
         }
     </style>
 </head>
 <body>
+
+    <!-- IT Background Particle Canvas -->
+    <canvas id="tech-canvas" class="fixed top-0 left-0 w-full h-full z-[-1] pointer-events-none opacity-40"></canvas>
 
     <!-- Custom Cursor & Spotlight -->
     <div class="cursor-dot"></div>
@@ -173,13 +176,13 @@
 
     <!-- Hero Section -->
     <section id="home" class="min-h-screen pt-24 pb-12 flex items-center relative overflow-hidden">
-        <!-- Background Blobs -->
+        <!-- Background Blobs (Kept for depth, along with canvas) -->
         <div class="absolute top-1/4 right-0 w-72 h-72 bg-blue-600/10 blur-[120px] rounded-full pointer-events-none"></div>
         <div class="absolute bottom-1/4 left-0 w-72 h-72 bg-cyan-600/10 blur-[120px] rounded-full pointer-events-none"></div>
 
         <div class="max-w-7xl mx-auto px-4 w-full grid md:grid-cols-2 gap-12 items-center z-10">
             <div class="reveal space-y-6">
-                <div class="inline-block px-4 py-1 rounded-full text-sm font-semibold border bg-blue-500/10 border-blue-500/20 text-blue-400">
+                <div class="inline-block px-4 py-1 rounded-full text-sm font-semibold border bg-blue-500/10 border-blue-500/20 text-blue-400 backdrop-blur-sm">
                     👋 ยินดีต้อนรับสู่พอร์ตโฟลิโอของผม
                 </div>
                 <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight">
@@ -194,10 +197,10 @@
                     GPA 3.43 มีความกระตือรือร้นในการเรียนรู้เทคโนโลยีใหม่ๆ มีทักษะพื้นฐานด้านกราฟิก (Photoshop) การตัดต่อวิดีโอ และการออกแบบ UI สามารถทำงานภายใต้ความกดดันและทำงานเป็นทีมได้ดี
                 </p>
                 <div class="flex gap-4 pt-4">
-                    <button onclick="scrollToSection('contact')" class="px-8 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold transition-all transform hover:-translate-y-1 shadow-lg shadow-blue-600/20">
-                        ติดต่อ
+                    <button onclick="scrollToSection('contact')" class="px-8 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold transition-all transform hover:-translate-y-1 shadow-lg shadow-blue-600/20 backdrop-blur-sm">
+                        ติดต่อสอบถาม
                     </button>
-                    <button onclick="scrollToSection('projects')" class="px-8 py-3 rounded-full border border-slate-700 hover:bg-slate-900 font-bold transition-all text-white">
+                    <button onclick="scrollToSection('projects')" class="px-8 py-3 rounded-full border border-slate-700 hover:bg-slate-800/80 font-bold transition-all text-white backdrop-blur-sm">
                         ชมผลงาน
                     </button>
                 </div>
@@ -210,10 +213,10 @@
                         <img src="https://i.postimg.cc/rmKXBD4f/Brighter-Portrait.png" alt="Profile" class="w-full h-full object-cover object-top grayscale-[20%] group-hover:grayscale-0 transition duration-500">
                     </div>
                     <!-- Floating Icons -->
-                    <div class="absolute -right-4 top-1/4 p-3 rounded-2xl shadow-xl bg-slate-800 animate-bounce" style="animation-duration: 3s;">
+                    <div class="absolute -right-4 top-1/4 p-3 rounded-2xl shadow-xl bg-slate-800/90 backdrop-blur-sm animate-bounce" style="animation-duration: 3s;">
                         <i data-lucide="monitor-play" class="text-blue-500 w-6 h-6"></i>
                     </div>
-                    <div class="absolute -left-4 bottom-1/4 p-3 rounded-2xl shadow-xl bg-slate-800 animate-bounce" style="animation-duration: 3s; animation-delay: 0.7s;">
+                    <div class="absolute -left-4 bottom-1/4 p-3 rounded-2xl shadow-xl bg-slate-800/90 backdrop-blur-sm animate-bounce" style="animation-duration: 3s; animation-delay: 0.7s;">
                         <i data-lucide="gamepad-2" class="text-cyan-500 w-6 h-6"></i>
                     </div>
                 </div>
@@ -222,8 +225,8 @@
     </section>
 
     <!-- About Section -->
-    <section id="about" class="py-24 bg-slate-900/50">
-        <div class="max-w-5xl mx-auto px-4">
+    <section id="about" class="py-24 bg-slate-900/40 border-y border-slate-800/50 backdrop-blur-sm">
+        <div class="max-w-5xl mx-auto px-4 relative z-10">
             <div class="reveal text-center mb-16">
                 <h2 class="text-3xl font-bold mb-4 text-white">รู้จักกันให้มากขึ้น</h2>
                 <div class="w-12 h-1 bg-blue-500 mx-auto rounded-full"></div>
@@ -250,25 +253,25 @@
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="p-6 rounded-2xl text-center font-bold bg-slate-800/50 text-slate-300">Creative</div>
-                    <div class="p-6 rounded-2xl text-center font-bold bg-slate-800/50 text-slate-300">Detail-oriented</div>
-                    <div class="p-6 rounded-2xl text-center font-bold bg-slate-800/50 text-slate-300">Fast Learner</div>
-                    <div class="p-6 rounded-2xl text-center font-bold bg-slate-800/50 text-slate-300">Team Player</div>
+                    <div class="p-6 rounded-2xl text-center font-bold bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 text-slate-300 hover:bg-slate-700/50 transition-colors">Creative</div>
+                    <div class="p-6 rounded-2xl text-center font-bold bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 text-slate-300 hover:bg-slate-700/50 transition-colors">Detail-oriented</div>
+                    <div class="p-6 rounded-2xl text-center font-bold bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 text-slate-300 hover:bg-slate-700/50 transition-colors">Fast Learner</div>
+                    <div class="p-6 rounded-2xl text-center font-bold bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 text-slate-300 hover:bg-slate-700/50 transition-colors">Team Player</div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Skills Section -->
-    <section id="skills" class="py-24">
-        <div class="max-w-7xl mx-auto px-4">
+    <section id="skills" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 z-10 relative">
             <div class="reveal text-center mb-16">
                 <h2 class="text-3xl font-bold mb-4 text-white">ทักษะและความสามารถ</h2>
                 <div class="w-12 h-1 bg-blue-500 mx-auto rounded-full"></div>
             </div>
             <div class="reveal grid md:grid-cols-3 gap-8">
                 <!-- Skill Group 1 -->
-                <div class="p-8 rounded-3xl border border-slate-800 bg-slate-900 transition-all hover:border-blue-500/50">
+                <div class="p-8 rounded-3xl border border-slate-800 bg-slate-900/80 backdrop-blur-md transition-all hover:border-blue-500/50">
                     <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500 mb-6">
                         <i data-lucide="monitor-play" class="w-6 h-6"></i>
                     </div>
@@ -290,7 +293,7 @@
                 </div>
 
                 <!-- Skill Group 2 -->
-                <div class="p-8 rounded-3xl border border-slate-800 bg-slate-900 transition-all hover:border-blue-500/50">
+                <div class="p-8 rounded-3xl border border-slate-800 bg-slate-900/80 backdrop-blur-md transition-all hover:border-blue-500/50">
                     <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500 mb-6">
                         <i data-lucide="code" class="w-6 h-6"></i>
                     </div>
@@ -312,7 +315,7 @@
                 </div>
 
                 <!-- Skill Group 3 -->
-                <div class="p-8 rounded-3xl border border-slate-800 bg-slate-900 transition-all hover:border-blue-500/50">
+                <div class="p-8 rounded-3xl border border-slate-800 bg-slate-900/80 backdrop-blur-md transition-all hover:border-blue-500/50">
                     <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500 mb-6">
                         <i data-lucide="user" class="w-6 h-6"></i>
                     </div>
@@ -337,23 +340,23 @@
     </section>
 
     <!-- Experience Section -->
-    <section id="experience" class="py-24 bg-slate-900/50">
-        <div class="max-w-4xl mx-auto px-4">
+    <section id="experience" class="py-24 bg-slate-900/40 border-y border-slate-800/50 backdrop-blur-sm">
+        <div class="max-w-4xl mx-auto px-4 relative z-10">
             <div class="reveal text-center mb-16">
                 <h2 class="text-3xl font-bold mb-4 text-white">ประวัติการศึกษา</h2>
                 <div class="w-12 h-1 bg-blue-500 mx-auto rounded-full"></div>
             </div>
-            <div class="reveal space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
+            <div class="reveal space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-blue-500/30 before:to-transparent">
                 
                 <!-- Edu Item 1 -->
                 <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
-                    <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-blue-500 text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border border-slate-800 bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.5)] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 transition-transform group-hover:scale-110">
                         <i data-lucide="star" class="w-4 h-4"></i>
                     </div>
-                    <div class="w-[calc(100%-4rem)] md:w-[45%] p-6 rounded-2xl border border-slate-800 bg-slate-900 transition-all hover:shadow-xl">
+                    <div class="w-[calc(100%-4rem)] md:w-[45%] p-6 rounded-2xl border border-slate-800 bg-slate-900/80 backdrop-blur-md transition-all hover:shadow-[0_0_20px_rgba(37,99,235,0.1)] hover:border-blue-500/30">
                         <div class="flex justify-between items-start mb-2">
                             <span class="text-sm font-bold text-blue-500">ปัจจุบัน</span>
-                            <span class="px-2 py-0.5 rounded text-xs font-bold bg-slate-800 text-white">GPA 3.43</span>
+                            <span class="px-2 py-0.5 rounded text-xs font-bold bg-slate-800 border border-slate-700 text-white">GPA 3.43</span>
                         </div>
                         <h3 class="text-lg font-bold text-white">ปริญญาตรี (กำลังศึกษา)</h3>
                         <div class="font-medium text-slate-500 mb-2">มหาวิทยาลัยราชภัฏสงขลา</div>
@@ -363,17 +366,17 @@
 
                 <!-- Edu Item 2 -->
                 <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
-                    <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-blue-500 text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
-                        <i data-lucide="star" class="w-4 h-4"></i>
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border border-slate-800 bg-slate-800 text-slate-400 shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 transition-colors group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-[0_0_15px_rgba(37,99,235,0.5)]">
+                        <i data-lucide="graduation-cap" class="w-4 h-4"></i>
                     </div>
-                    <div class="w-[calc(100%-4rem)] md:w-[45%] p-6 rounded-2xl border border-slate-800 bg-slate-900 transition-all hover:shadow-xl">
+                    <div class="w-[calc(100%-4rem)] md:w-[45%] p-6 rounded-2xl border border-slate-800 bg-slate-900/80 backdrop-blur-md transition-all hover:shadow-[0_0_20px_rgba(37,99,235,0.1)] hover:border-blue-500/30">
                         <div class="flex justify-between items-start mb-2">
-                            <span class="text-sm font-bold text-blue-500">2023</span>
-                            <span class="px-2 py-0.5 rounded text-xs font-bold bg-slate-800 text-white">GPA 2.85</span>
+                            <span class="text-sm font-bold text-slate-400 group-hover:text-blue-500 transition-colors">2023</span>
+                            <span class="px-2 py-0.5 rounded text-xs font-bold bg-slate-800 border border-slate-700 text-white">GPA 2.85</span>
                         </div>
                         <h3 class="text-lg font-bold text-white">มัธยมศึกษาตอนปลาย</h3>
                         <div class="font-medium text-slate-500 mb-2">โรงเรียนเทศบาล 2 บ้านสะเดา จ.สงขลา</div>
-                        <p class="text-sm text-slate-400">สำเร็จการศึกษาชั้นมัธยมปลาย สายศิลป์-มลายู</p>
+                        <p class="text-sm text-slate-400">สำเร็จการศึกษาชั้นมัธยมปลาย สายวิทย์-คณิต</p>
                     </div>
                 </div>
 
@@ -382,17 +385,17 @@
     </section>
 
     <!-- Projects Section -->
-    <section id="projects" class="py-24">
-        <div class="max-w-7xl mx-auto px-4">
+    <section id="projects" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 z-10 relative">
             <div class="reveal text-center mb-12">
                 <h2 class="text-3xl font-bold mb-4 text-white">ผลงานที่ภาคภูมิใจ</h2>
                 <div class="w-12 h-1 bg-blue-500 mx-auto rounded-full mb-8"></div>
                 <div class="flex flex-wrap justify-center gap-3" id="project-filters">
-                    <button class="filter-btn px-6 py-2 rounded-full text-sm font-bold transition-all bg-blue-600 text-white" data-filter="All">All</button>
-                    <button class="filter-btn px-6 py-2 rounded-full text-sm font-bold transition-all bg-slate-800 text-slate-400 hover:bg-slate-700" data-filter="Design">Design</button>
-                    <button class="filter-btn px-6 py-2 rounded-full text-sm font-bold transition-all bg-slate-800 text-slate-400 hover:bg-slate-700" data-filter="Event">Event</button>
-                    <button class="filter-btn px-6 py-2 rounded-full text-sm font-bold transition-all bg-slate-800 text-slate-400 hover:bg-slate-700" data-filter="Media">Media</button>
-                    <button class="filter-btn px-6 py-2 rounded-full text-sm font-bold transition-all bg-slate-800 text-slate-400 hover:bg-slate-700" data-filter="Academic">Academic</button>
+                    <button class="filter-btn px-6 py-2 rounded-full text-sm font-bold transition-all bg-blue-600 text-white shadow-lg shadow-blue-500/20" data-filter="All">All</button>
+                    <button class="filter-btn px-6 py-2 rounded-full text-sm font-bold transition-all bg-slate-800/80 backdrop-blur-sm border border-slate-700 text-slate-300 hover:bg-slate-700" data-filter="Design">Design</button>
+                    <button class="filter-btn px-6 py-2 rounded-full text-sm font-bold transition-all bg-slate-800/80 backdrop-blur-sm border border-slate-700 text-slate-300 hover:bg-slate-700" data-filter="Event">Event</button>
+                    <button class="filter-btn px-6 py-2 rounded-full text-sm font-bold transition-all bg-slate-800/80 backdrop-blur-sm border border-slate-700 text-slate-300 hover:bg-slate-700" data-filter="Media">Media</button>
+                    <button class="filter-btn px-6 py-2 rounded-full text-sm font-bold transition-all bg-slate-800/80 backdrop-blur-sm border border-slate-700 text-slate-300 hover:bg-slate-700" data-filter="Academic">Academic</button>
                 </div>
             </div>
 
@@ -404,51 +407,51 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-24 bg-slate-900/50">
-        <div class="max-w-4xl mx-auto px-4">
-            <div class="reveal rounded-[3rem] overflow-hidden p-8 md:p-16 text-center shadow-2xl relative bg-slate-950 border border-slate-800">
+    <section id="contact" class="py-24 bg-slate-900/40 border-t border-slate-800/50 backdrop-blur-sm">
+        <div class="max-w-4xl mx-auto px-4 relative z-10">
+            <div class="reveal rounded-[3rem] overflow-hidden p-8 md:p-16 text-center shadow-2xl relative bg-slate-950/80 backdrop-blur-md border border-slate-800">
                 <div class="relative z-10 space-y-10">
                     <div class="space-y-4">
-                        <div class="inline-flex p-4 rounded-3xl bg-blue-500/10 text-blue-500 mb-2">
+                        <div class="inline-flex p-4 rounded-3xl bg-blue-500/10 border border-blue-500/20 text-blue-500 mb-2">
                             <i data-lucide="message-circle" class="w-8 h-8"></i>
                         </div>
                         <h2 class="text-4xl md:text-5xl font-black tracking-tight text-white">คุยกับผมได้ที่นี่</h2>
                         <p class="text-lg max-w-lg mx-auto leading-relaxed text-slate-400">
-                            ช่องทางการติดต่อ
+                            มีโปรเจกต์ที่น่าสนใจ หรือต้องการร่วมงานกัน? เลือกช่องทางที่คุณสะดวกเพื่อติดต่อผมได้โดยตรงครับ!
                         </p>
                     </div>
 
                     <div class="grid gap-6 md:grid-cols-3 max-w-3xl mx-auto">
                         <!-- Email -->
-                        <a href="mailto:poompt095@gmail.com" class="group p-8 rounded-[2rem] border border-slate-800 bg-slate-900 transition-all hover:-translate-y-2 hover:border-blue-500/50 flex flex-col items-center gap-4">
+                        <a href="mailto:poompt095@gmail.com" class="group p-8 rounded-[2rem] border border-slate-800 bg-slate-900/80 transition-all hover:-translate-y-2 hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(37,99,235,0.15)] flex flex-col items-center gap-4">
                             <div class="w-14 h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover:scale-110 transition-transform">
                                 <i data-lucide="mail" class="w-6 h-6"></i>
                             </div>
                             <div class="text-center">
                                 <p class="text-xs uppercase font-black opacity-40 mb-1 tracking-widest text-slate-300">Email</p>
-                                <p class="font-bold text-sm md:text-xs lg:text-sm truncate w-full max-w-[150px] text-white">poompt095@gmail.com</p>
+                                <p class="font-bold text-sm md:text-xs lg:text-sm truncate w-full max-w-[150px] text-white group-hover:text-blue-400 transition-colors">poompt095@gmail.com</p>
                             </div>
                         </a>
 
                         <!-- Phone -->
-                        <a href="tel:095-092-3050" class="group p-8 rounded-[2rem] border border-slate-800 bg-slate-900 transition-all hover:-translate-y-2 hover:border-blue-500/50 flex flex-col items-center gap-4">
+                        <a href="tel:095-092-3050" class="group p-8 rounded-[2rem] border border-slate-800 bg-slate-900/80 transition-all hover:-translate-y-2 hover:border-green-500/50 hover:shadow-[0_0_30px_rgba(34,197,94,0.1)] flex flex-col items-center gap-4">
                             <div class="w-14 h-14 rounded-2xl bg-green-500/10 flex items-center justify-center text-green-500 group-hover:scale-110 transition-transform">
                                 <i data-lucide="phone" class="w-6 h-6"></i>
                             </div>
                             <div class="text-center">
                                 <p class="text-xs uppercase font-black opacity-40 mb-1 tracking-widest text-slate-300">Phone</p>
-                                <p class="font-bold text-sm text-white">095-092-3050</p>
+                                <p class="font-bold text-sm text-white group-hover:text-green-400 transition-colors">095-092-3050</p>
                             </div>
                         </a>
 
                         <!-- Line -->
-                        <a href="https://line.me/ti/p/~arther09" target="_blank" class="group p-8 rounded-[2rem] border border-slate-800 bg-slate-900 transition-all hover:-translate-y-2 hover:border-blue-500/50 flex flex-col items-center gap-4">
-                            <div class="w-14 h-14 rounded-2xl bg-green-400/10 flex items-center justify-center text-green-400 group-hover:scale-110 transition-transform">
+                        <a href="https://line.me/ti/p/~arther09" target="_blank" class="group p-8 rounded-[2rem] border border-slate-800 bg-slate-900/80 transition-all hover:-translate-y-2 hover:border-[#00B900]/50 hover:shadow-[0_0_30px_rgba(0,185,0,0.1)] flex flex-col items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-[#00B900]/10 flex items-center justify-center text-[#00B900] group-hover:scale-110 transition-transform">
                                 <i data-lucide="message-circle" class="w-6 h-6"></i>
                             </div>
                             <div class="text-center">
                                 <p class="text-xs uppercase font-black opacity-40 mb-1 tracking-widest text-slate-300">Line ID</p>
-                                <p class="font-bold text-sm text-white">arther09</p>
+                                <p class="font-bold text-sm text-white group-hover:text-[#00B900] transition-colors">arther09</p>
                             </div>
                         </a>
                     </div>
@@ -458,6 +461,16 @@
                         <div class="flex items-center gap-2 text-sm font-medium opacity-70 text-slate-300">
                             <i data-lucide="map-pin" class="w-5 h-5 text-blue-500"></i>
                             <span>197 ถ.ปาดังเบซาร์ ต.สะเดา อ.สะเดา จ.สงขลา 90120</span>
+                        </div>
+                        
+                        <!-- Social Icons -->
+                        <div class="flex items-center gap-4">
+                            <a href="#" class="w-12 h-12 rounded-full border border-slate-700 bg-slate-800/80 flex items-center justify-center text-slate-300 hover:text-white hover:bg-blue-600 hover:border-blue-500 hover:-translate-y-1 transition-all">
+                                <i data-lucide="github" class="w-5 h-5"></i>
+                            </a>
+                            <a href="#" class="w-12 h-12 rounded-full border border-slate-700 bg-slate-800/80 flex items-center justify-center text-slate-300 hover:text-white hover:bg-blue-500 hover:border-blue-400 hover:-translate-y-1 transition-all">
+                                <i data-lucide="linkedin" class="w-5 h-5"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -470,23 +483,23 @@
     </section>
 
     <!-- Footer -->
-    <footer class="py-8 border-t border-slate-900 text-center bg-slate-950">
+    <footer class="py-8 border-t border-slate-900 text-center bg-slate-950/80 backdrop-blur-md relative z-10">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex items-center justify-center gap-2 opacity-50">
-                <span class="text-sm text-white">&copy; 2026 Poom Phetthong. All rights reserved.</span>
+                <span class="text-sm text-white">&copy; 2024 Poom Phetthong. All rights reserved.</span>
             </div>
         </div>
     </footer>
 
     <!-- Back to Top Button -->
-    <button onclick="scrollToSection('home')" class="fixed bottom-6 right-6 p-3 rounded-full shadow-2xl transition-all hover:scale-110 z-40 bg-blue-600 text-white cursor-none">
+    <button onclick="scrollToSection('home')" class="fixed bottom-6 right-6 p-3 rounded-full shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all hover:scale-110 z-40 bg-blue-600 border border-blue-400 text-white cursor-none">
         <i data-lucide="arrow-up" class="w-5 h-5"></i>
     </button>
 
     <!-- Modal -->
     <div id="project-modal" class="modal">
         <div class="modal-content relative flex flex-col md:flex-row overflow-hidden">
-            <button onclick="closeModal()" class="absolute top-6 right-6 z-20 p-2 rounded-full bg-slate-800 hover:bg-slate-700 text-white transition-colors">
+            <button onclick="closeModal()" class="absolute top-6 right-6 z-20 p-2 rounded-full bg-slate-800 border border-slate-600 hover:bg-slate-700 text-white transition-colors cursor-none">
                 <i data-lucide="x" class="w-6 h-6"></i>
             </button>
             
@@ -494,21 +507,133 @@
                 <!-- Media will be injected here -->
             </div>
             
-            <div class="md:w-1/2 p-8 md:p-12 space-y-6 flex flex-col justify-center">
+            <div class="md:w-1/2 p-8 md:p-12 space-y-6 flex flex-col justify-center overflow-y-auto max-h-[500px] bg-slate-900/95 backdrop-blur-xl">
                 <div class="flex items-center gap-2 text-blue-500 font-bold uppercase tracking-widest text-xs">
                     <i data-lucide="layers" class="w-4 h-4"></i>
                     <span id="modal-category">Category</span>
                 </div>
                 <h2 id="modal-title" class="text-3xl font-black leading-tight text-white">Title</h2>
                 <p id="modal-description" class="text-lg leading-relaxed text-slate-400">Description</p>
-                <div id="modal-tags" class="flex flex-wrap gap-2 pt-4">
+                <div id="modal-tags" class="flex flex-wrap gap-2 pt-2">
                     <!-- Tags -->
                 </div>
+                
+                <!-- Project External Link Button -->
+                <a id="modal-link-btn" href="#" target="_blank" class="mt-4 inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold transition-all w-fit cursor-none shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] border border-blue-500" style="display: none;">
+                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                    เข้าชมเว็บไซต์
+                </a>
             </div>
         </div>
     </div>
 
     <script>
+        // --- IT Background Particle System (Subtle Network Nodes) ---
+        const bCanvas = document.getElementById('tech-canvas');
+        const bCtx = bCanvas.getContext('2d');
+        let particlesArray = [];
+        let bMouse = { x: null, y: null, radius: 150 };
+
+        function resizeCanvas() {
+            bCanvas.width = window.innerWidth;
+            bCanvas.height = window.innerHeight;
+            initParticles(); // Re-init particles on resize to adjust count
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        class TechParticle {
+            constructor() {
+                this.x = Math.random() * bCanvas.width;
+                this.y = Math.random() * bCanvas.height;
+                this.size = Math.random() * 1.5 + 0.5; // Small nodes
+                this.speedX = (Math.random() - 0.5) * 0.4; // Very slow
+                this.speedY = (Math.random() - 0.5) * 0.4; // Very slow
+                // Theme colors: Blue and Cyan
+                this.color = Math.random() > 0.5 ? 'rgba(59, 130, 246, 0.4)' : 'rgba(6, 182, 212, 0.4)';
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Bounce off edges
+                if (this.x > bCanvas.width || this.x < 0) this.speedX = -this.speedX;
+                if (this.y > bCanvas.height || this.y < 0) this.speedY = -this.speedY;
+
+                // Subtle interaction with mouse (move away slightly)
+                if (bMouse.x != null && bMouse.y != null) {
+                    let dx = bMouse.x - this.x;
+                    let dy = bMouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < bMouse.radius) {
+                        const forceDirectionX = dx / distance;
+                        const forceDirectionY = dy / distance;
+                        const force = (bMouse.radius - distance) / bMouse.radius;
+                        const directionX = forceDirectionX * force * 0.5; // Gentle push multiplier
+                        const directionY = forceDirectionY * force * 0.5;
+                        this.x -= directionX;
+                        this.y -= directionY;
+                    }
+                }
+            }
+            draw() {
+                bCtx.beginPath();
+                bCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                bCtx.fillStyle = this.color;
+                bCtx.fill();
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            // "ไม่ตกเยอะมากแบบพอดีๆ" - Calculate reasonable amount based on screen size
+            let numberOfParticles = (bCanvas.width * bCanvas.height) / 18000; 
+            // Limit for super large screens
+            if (numberOfParticles > 100) numberOfParticles = 100;
+
+            for (let i = 0; i < numberOfParticles; i++) {
+                particlesArray.push(new TechParticle());
+            }
+        }
+
+        function animateParticles() {
+            bCtx.clearRect(0, 0, bCanvas.width, bCanvas.height);
+            
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+                
+                // Draw connecting lines (Network effect)
+                for (let j = i; j < particlesArray.length; j++) {
+                    const dx = particlesArray[i].x - particlesArray[j].x;
+                    const dy = particlesArray[i].y - particlesArray[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 140) { // Connect if close enough
+                        bCtx.beginPath();
+                        // Opacity depends on distance
+                        let lineOpacity = 1 - (distance / 140);
+                        // Make line color slightly blueish
+                        bCtx.strokeStyle = `rgba(59, 130, 246, ${lineOpacity * 0.15})`; 
+                        bCtx.lineWidth = 0.8;
+                        bCtx.moveTo(particlesArray[i].x, particlesArray[i].y);
+                        bCtx.lineTo(particlesArray[j].x, particlesArray[j].y);
+                        bCtx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        // Initialize background canvas
+        resizeCanvas();
+        animateParticles();
+
+        window.addEventListener('mouseout', () => {
+            bMouse.x = null;
+            bMouse.y = null;
+        });
+
+
         // --- Data ---
         const projectsData = [
             {
@@ -551,15 +676,16 @@
                 ]
             },
             {
-                id: 4, // โปรเจกต์ใหม่ที่เพิ่มเข้ามา
+                id: 4,
                 title: "Music Video Production",
                 category: "Media",
                 description: "ผู้ช่วยและนักแสดงในการถ่ายทำและผลิตมิวสิควิดีโอ (MV)",
                 fullDescription: "มีส่วนร่วมในกระบวนการถ่ายทำมิวสิควิดีโอ ทั้งเบื้องหน้าและเบื้องหลัง เรียนรู้การจัดวางมุมกล้อง และช่วยสนับสนุนฝ่ายตัดต่อในการเรียบเรียงฟุตเทจเบื้องต้น",
-                tags: ["Video Editing", "MV"],
-                icon: "youtube",
-                image: "https://img.youtube.com/vi/kb5VwVnHyaQ/maxresdefault.jpg", // ดึงภาพปกจากคลิปอัตโนมัติ
-                video: "https://youtu.be/kb5VwVnHyaQ"
+                tags: ["Production", "Editing"],
+                icon: "video",
+                image: "https://img.youtube.com/vi/kb5VwVnHyaQ/maxresdefault.jpg",
+                video: "https://youtu.be/kb5VwVnHyaQ", 
+                previewVideo: "https://youtu.be/kb5VwVnHyaQ" 
             },
             {
                 id: 5,
@@ -576,25 +702,42 @@
                 ]
             },
             {
-                id: 6, // เพิ่ม Project ใหม่ที่นี่
-                title: "Poster Design",
+                id: 6,
+                title: "Bugatti Poster Design",
                 category: "Design",
                 description: "ออกแบบโปสเตอร์รถยนต์ Bugatti ด้วยสไตล์คลาสสิกขาว-ดำ",
-                fullDescription: "ผลงานการออกแบบโปสเตอร์รถยนต์ Bugatti ซูเปอร์คาร์ระดับตำนาน โดยเน้นการใช้สีขาวดำ เพื่อสร้างความโดดเด่นและคลาสสิก มีการจัดวางเลย์เอาต์ Typography ให้ดูทันสมัยและดึงดูดสายตา",
-                tags: ["Poster Design", "Photoshop"],
+                fullDescription: "ผลงานการออกแบบโปสเตอร์รถยนต์ Bugatti ซูเปอร์คาร์ระดับตำนาน โดยเน้นการใช้สีขาวดำ (Monochrome) เพื่อสร้างความโดดเด่นและคลาสสิก มีการจัดวางเลย์เอาต์ Typography ให้ดูทันสมัยและดึงดูดสายตา",
+                tags: ["Poster Design", "Photoshop", "Monochrome"],
                 icon: "palette",
-                image: "https://i.postimg.cc/y8q8JFwF/Poom015.jpg" // อ้างอิงไฟล์รูปที่คุณอัปโหลด
+                image: "https://i.postimg.cc/y8q8JFwF/Poom015.jpg"
             },
             {
-                id: 7, // โปรเจกต์ใหม่ที่เพิ่มเข้ามา
-                title: "Video Content",
+                id: 7,
+                title: "YouTube Video Content",
                 category: "Media",
-                description: "สร้างสรรค์และตัดต่อวิดีโอคอนเทนต์บน YouTube",
-                fullDescription: "รับผิดชอบในกระบวนการตัดต่อและเรียบเรียงวิดีโอ ในการทำคลิปวิดีโอสำหรับวัน Open House ",
-                tags: ["Video Editing", "Content Creator"],
+                description: "สร้างสรรค์และตัดต่อวิดีโอคอนเทนต์สำหรับแพลตฟอร์ม YouTube",
+                fullDescription: "รับผิดชอบในกระบวนการตัดต่อและเรียบเรียงวิดีโอ เพื่อสร้างคอนเทนต์ที่น่าสนใจบน YouTube โดยใช้เทคนิคการเล่าเรื่อง การใส่ Effect และปรับแต่งเสียงเพื่อให้วิดีโอมีความน่าติดตาม",
+                tags: ["Video Editing", "Content Creator", "YouTube"],
                 icon: "youtube",
-                image: "https://img.youtube.com/vi/NNpqmkcciZs/maxresdefault.jpg", // ดึงภาพปกจากคลิปอัตโนมัติ
-                video: "https://youtu.be/NNpqmkcciZs"
+                image: "https://img.youtube.com/vi/NNpqmkcciZs/maxresdefault.jpg", 
+                video: "https://youtu.be/NNpqmkcciZs",
+                previewVideo: "https://youtu.be/NNpqmkcciZs"
+            },
+            {
+                id: 8,
+                title: "Flood Monitoring System",
+                category: "Academic",
+                description: "พัฒนาระบบเว็บไซต์สำหรับติดตามและเฝ้าระวังสถานการณ์น้ำท่วม",
+                fullDescription: "ออกแบบและพัฒนา Web Application สำหรับแสดงผลและติดตามสถานการณ์น้ำท่วม โดยรวบรวมข้อมูลและแสดงผลผ่านหน้า Dashboard ที่เข้าใจง่าย เพื่อช่วยอำนวยความสะดวกในการเฝ้าระวังและรับมือกับภัยพิบัติ",
+                tags: ["Web Development", "Dashboard", "UI/UX"],
+                icon: "waves",
+                image: "https://i.postimg.cc/sxhWWh3b/Screenshot-2026-03-14-132711.png",
+                gallery: [
+                    "https://i.postimg.cc/sxhWWh3b/Screenshot-2026-03-14-132711.png",
+                    "https://i.postimg.cc/Y0WFFWpH/Screenshot-2026-03-14-132907.png",
+                    "https://i.postimg.cc/BbKFFKq3/Screenshot-2026-03-14-132929.png"
+                ],
+                link: "https://starnizslart.github.io/viberskru/"
             }
         ];
 
@@ -602,7 +745,7 @@
         lucide.createIcons();
 
         // --- Typewriter Effect ---
-        const roles = ["นักศึกษา ITDI"];
+        const roles = ["นักศึกษา ITDI", "Graphic Designer", "Video Editor"];
         let roleIndex = 0;
         let charIndex = 0;
         let isDeleting = false;
@@ -643,6 +786,10 @@
         window.addEventListener('mousemove', (e) => {
             const x = e.clientX;
             const y = e.clientY;
+            
+            // For background particles mouse interaction
+            bMouse.x = x;
+            bMouse.y = y;
 
             // Move Dot instantly
             cursorDot.style.left = `${x}px`;
@@ -706,7 +853,7 @@
             
             filtered.forEach(project => {
                 const card = document.createElement('div');
-                card.className = 'project-card group rounded-3xl overflow-hidden border border-slate-800 bg-slate-900 cursor-none transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl';
+                card.className = 'project-card group rounded-3xl overflow-hidden border border-slate-800 bg-slate-900/80 backdrop-blur-sm cursor-none transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_15px_30px_rgba(0,0,0,0.5)] hover:border-blue-500/30';
                 card.onclick = () => openModal(project);
                 
                 // Mouse enter/leave logic for preview
@@ -715,20 +862,25 @@
                     if (project.previewVideo) {
                         previewTimeout = setTimeout(() => {
                             const container = card.querySelector('.media-container');
-                            
-                            // Check if it's a local video or youtube iframe
                             let mediaHtml = '';
+                            
                             if (project.previewVideo.endsWith('.mp4')) {
                                 mediaHtml = `<video src="${project.previewVideo}" class="w-full h-full object-cover pointer-events-none" autoplay muted loop playsinline></video>`;
                             } else {
-                                mediaHtml = `<iframe src="${project.previewVideo}" class="w-full h-full pointer-events-none scale-125" frameborder="0" allow="autoplay; encrypted-media"></iframe>`;
+                                // ตรวจสอบว่าเป็น YouTube Link หรือไม่ เพื่อแปลงเป็น Embed URL สำหรับเล่นวนซ้ำ
+                                const ytMatch = project.previewVideo.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
+                                let embedUrl = project.previewVideo;
+                                if (ytMatch && ytMatch[2].length === 11) {
+                                    embedUrl = `https://www.youtube.com/embed/${ytMatch[2]}?autoplay=1&mute=1&controls=0&loop=1&playlist=${ytMatch[2]}&rel=0&playsinline=1`;
+                                }
+                                mediaHtml = `<iframe src="${embedUrl}" class="w-full h-full pointer-events-none scale-125" frameborder="0" allow="autoplay; encrypted-media"></iframe>`;
                             }
 
                             container.innerHTML = `
                                 <div class="absolute inset-0 w-full h-full bg-black z-20">
                                     ${mediaHtml}
                                     <div class="absolute inset-0 bg-transparent z-30"></div>
-                                    <div class="absolute top-2 left-2 px-2 py-1 bg-red-600 text-white text-[10px] font-bold rounded flex items-center gap-1 shadow-md z-40">
+                                    <div class="absolute top-2 left-2 px-2 py-1 bg-red-600/90 backdrop-blur-sm text-white text-[10px] font-bold rounded flex items-center gap-1 shadow-md z-40">
                                         <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span> PREVIEW
                                     </div>
                                 </div>
@@ -744,11 +896,11 @@
                         <div class="text-blue-500 transform group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500 z-0">
                             <i data-lucide="${project.icon}" class="w-12 h-12"></i>
                         </div>
-                        <div class="absolute inset-0 bg-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-10">
-                            <i data-lucide="${project.video ? 'play' : 'external-link'}" class="text-white w-10 h-10 drop-shadow-lg"></i>
+                        <div class="absolute inset-0 bg-blue-600/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-10 backdrop-blur-[2px]">
+                            <i data-lucide="${project.video || project.link ? (project.video ? 'play' : 'external-link') : 'image'}" class="text-white w-10 h-10 drop-shadow-lg"></i>
                         </div>
-                        <img src="${project.image}" alt="${project.title}" class="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 opacity-30 group-hover:opacity-100">
-                        <div class="absolute top-4 right-4 bg-white/10 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-blue-500 border border-blue-500/20 z-10">
+                        <img src="${project.image}" alt="${project.title}" class="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 opacity-30 group-hover:opacity-100 mix-blend-luminosity group-hover:mix-blend-normal">
+                        <div class="absolute top-4 right-4 bg-slate-900/80 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-blue-400 border border-slate-700 z-10">
                             ${project.category}
                         </div>
                     `;
@@ -757,20 +909,20 @@
 
                 // Initial Content
                 card.innerHTML = `
-                    <div class="media-container h-48 flex items-center justify-center relative overflow-hidden bg-slate-800">
+                    <div class="media-container h-48 flex items-center justify-center relative overflow-hidden bg-slate-950">
                         <div class="text-blue-500 transform group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500 z-0">
                             <i data-lucide="${project.icon}" class="w-12 h-12"></i>
                         </div>
-                        <div class="absolute inset-0 bg-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-10">
-                            <i data-lucide="${project.video ? 'play' : 'external-link'}" class="text-white w-10 h-10 drop-shadow-lg"></i>
+                        <div class="absolute inset-0 bg-blue-600/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-10 backdrop-blur-[2px]">
+                            <i data-lucide="${project.video || project.link ? (project.video ? 'play' : 'external-link') : 'image'}" class="text-white w-10 h-10 drop-shadow-lg"></i>
                         </div>
-                        <img src="${project.image}" alt="${project.title}" class="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 opacity-30 group-hover:opacity-100">
-                        <div class="absolute top-4 right-4 bg-white/10 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-blue-500 border border-blue-500/20 z-10">
+                        <img src="${project.image}" alt="${project.title}" class="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 opacity-30 group-hover:opacity-100 mix-blend-luminosity group-hover:mix-blend-normal">
+                        <div class="absolute top-4 right-4 bg-slate-900/80 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-blue-400 border border-slate-700 z-10">
                             ${project.category}
                         </div>
                     </div>
                     <div class="p-6 relative z-10">
-                        <h3 class="text-xl font-bold mb-3 group-hover:text-blue-500 transition-colors text-white">${project.title}</h3>
+                        <h3 class="text-xl font-bold mb-3 group-hover:text-blue-400 transition-colors text-white">${project.title}</h3>
                         <p class="text-sm mb-6 h-12 line-clamp-2 text-slate-400">${project.description}</p>
                         <div class="flex flex-wrap gap-2">
                             ${project.tags.map(tag => `<span class="text-[10px] font-bold px-2 py-1 rounded border bg-slate-800 border-slate-700 text-slate-400">#${tag}</span>`).join('')}
@@ -790,12 +942,12 @@
             btn.addEventListener('click', () => {
                 // Remove active class
                 filterBtns.forEach(b => {
-                    b.classList.remove('bg-blue-600', 'text-white');
-                    b.classList.add('bg-slate-800', 'text-slate-400');
+                    b.classList.remove('bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-500/20');
+                    b.classList.add('bg-slate-800/80', 'text-slate-300');
                 });
                 // Add active class
-                btn.classList.remove('bg-slate-800', 'text-slate-400');
-                btn.classList.add('bg-blue-600', 'text-white');
+                btn.classList.remove('bg-slate-800/80', 'text-slate-300');
+                btn.classList.add('bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-500/20');
                 
                 renderProjects(btn.getAttribute('data-filter'));
             });
@@ -817,8 +969,26 @@
             // Render Tags
             const tagsContainer = document.getElementById('modal-tags');
             tagsContainer.innerHTML = project.tags.map(tag => 
-                `<span class="px-4 py-1.5 rounded-full text-xs font-bold border bg-slate-800 border-slate-700 text-slate-300">#${tag}</span>`
+                `<span class="px-4 py-1.5 rounded-full text-xs font-bold border bg-slate-800/80 border-slate-700 text-slate-300">#${tag}</span>`
             ).join('');
+
+            // Handle External Link Button
+            const linkBtn = document.getElementById('modal-link-btn');
+            if (project.link) {
+                linkBtn.href = project.link;
+                linkBtn.style.display = 'inline-flex';
+                // Add hover effect logic for the button due to custom cursor
+                linkBtn.addEventListener('mouseenter', () => {
+                    cursorOutline.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                    cursorOutline.style.backgroundColor = 'rgba(59, 130, 246, 0.1)';
+                });
+                linkBtn.addEventListener('mouseleave', () => {
+                    cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
+                    cursorOutline.style.backgroundColor = 'transparent';
+                });
+            } else {
+                linkBtn.style.display = 'none';
+            }
 
             // Render Media
             renderModalMedia();
@@ -859,7 +1029,7 @@
                     // ถ้าเป็น YouTube Link
                     const src = getVideoSource(currentProject.video);
                     container.innerHTML = `
-                        <div class="relative w-full h-full">
+                        <div class="relative w-full h-full flex justify-center items-center">
                             <iframe class="w-full h-full pointer-events-none" src="${src}" title="Video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                             <div class="absolute inset-0 bg-transparent z-10"></div>
                         </div>
@@ -876,13 +1046,25 @@
                 if (currentProject.gallery.length > 1) {
                     const prevBtn = document.createElement('button');
                     prevBtn.innerHTML = '<i data-lucide="chevron-left"></i>';
-                    prevBtn.className = 'absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 text-white hover:bg-black/70';
+                    prevBtn.className = 'absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 border border-slate-700 text-white hover:bg-black/80 transition-colors cursor-none backdrop-blur-sm';
                     prevBtn.onclick = (e) => { e.stopPropagation(); changeSlide(-1); };
                     
                     const nextBtn = document.createElement('button');
                     nextBtn.innerHTML = '<i data-lucide="chevron-right"></i>';
-                    nextBtn.className = 'absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 text-white hover:bg-black/70';
+                    nextBtn.className = 'absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 border border-slate-700 text-white hover:bg-black/80 transition-colors cursor-none backdrop-blur-sm';
                     nextBtn.onclick = (e) => { e.stopPropagation(); changeSlide(1); };
+
+                    // Mouse interactions for buttons
+                    [prevBtn, nextBtn].forEach(btn => {
+                        btn.addEventListener('mouseenter', () => {
+                            cursorOutline.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                            cursorOutline.style.backgroundColor = 'rgba(59, 130, 246, 0.1)';
+                        });
+                        btn.addEventListener('mouseleave', () => {
+                            cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
+                            cursorOutline.style.backgroundColor = 'transparent';
+                        });
+                    });
 
                     container.appendChild(prevBtn);
                     container.appendChild(nextBtn);
